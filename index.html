@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Digital Clock</title>
+  </head>
+  <body>
+    <video loop src="" id="video"></video>
+    <audio src="" id="audio"></audio>
+
+    <button data-video="rain.mp4" data-song="rain.mp3" id="rain">
+      <img name="rain" src="iconfinder_30_Cloud_Rain_183558.png" alt="" />
+    </button>
+
+    <div class="updateTime">
+      <div id="clock"></div>
+      <div id="day"></div>
+    </div>
+
+    <button data-video="beach.mp4" data-song="beach.mp3" id="waves">
+      <img name="beach" src="iconfinder_sea1_216717.png" alt="" />
+    </button>
+
+    <script>
+      function showClock() {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let day = date.getDay();
+        let month = date.getMonth();
+        let today = date.getDate();
+
+        hours = updateDigit(hours);
+        let format = updateFormat(hours);
+        hours = updatenumber(hours);
+        minutes = updatenumber(minutes);
+        day = updateDay(day);
+        month = updateMonth(month);
+        //get clock from html
+        let clock = document.getElementById('clock');
+        clock.innerHTML = `${hours}:${minutes}`;
+        //get day from html
+        let setDay = document.getElementById('day');
+        setDay.innerHTML = `${day}, ${month} ${today}`;
+      }
+      //update format AM | PM
+      function updateFormat(time) {
+        if (time > 12) {
+          time = 'PM';
+        } else {
+          time = 'AM';
+        }
+        return time;
+      }
+      //update digit
+      function updateDigit(time) {
+        if (time > 12) {
+          time = time - 12;
+        }
+        return time;
+      }
+      //update number
+      function updatenumber(time) {
+        if (time < 10) {
+          time = `0${time}`;
+        }
+        return time;
+      }
+      //update day
+      function updateDay(time) {
+        switch (time) {
+          case 1:
+            time = 'Monday';
+            break;
+          case 2:
+            time = 'Tuesday';
+            break;
+          case 3:
+            time = 'Wednesday';
+            break;
+          case 4:
+            time = 'Thursday';
+            break;
+          case 5:
+            time = 'Friday';
+            break;
+          case 6:
+            time = 'Saturday';
+            break;
+          case 7:
+            time = 'Sunday';
+            break;
+          default:
+            time = 'WeekDay';
+        }
+        return time;
+      }
+      //update month
+      function updateMonth(time) {
+        switch (time) {
+          case 1:
+            time = 'Jan';
+            break;
+          case 2:
+            time = 'Feb';
+            break;
+          case 3:
+            time = 'March';
+            break;
+          case 4:
+            time = 'April';
+            break;
+          case 5:
+            time = 'May';
+            break;
+          case 6:
+            time = 'June';
+            break;
+          case 7:
+            time = 'July';
+            break;
+          case 8:
+            time = 'August';
+            break;
+          case 9:
+            time = 'Sep';
+            break;
+          case 10:
+            time = 'Oct';
+            break;
+          case 11:
+            time = 'Nov';
+            break;
+          case 12:
+            time = 'Dec';
+            break;
+          default:
+            time = 'Month';
+        }
+        return time;
+      }
+
+      setInterval(showClock, 1000);
+      //weather background
+      let audio = document.getElementById('audio');
+      let video = document.getElementById('video');
+      let btns = document.querySelectorAll('button');
+      btns.forEach(btn => btn.addEventListener('click', doit));
+      function doit() {
+        let mp3Name = this.getAttribute('data-song');
+        let mp4Name = this.getAttribute('data-video');
+        audio.src = mp3Name;
+        video.src = mp4Name;
+        track();
+      }
+      function track() {
+        if (audio.paused) {
+          audio.play();
+          video.play();
+        } else {
+          audio.pause();
+          video.pause();
+        }
+      }
+    </script>
+  </body>
+</html>
